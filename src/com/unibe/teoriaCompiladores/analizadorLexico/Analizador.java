@@ -10,8 +10,10 @@ package com.unibe.teoriaCompiladores.analizadorLexico;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  *
@@ -27,45 +29,48 @@ public class Analizador {
      * @return expAnalizadas son las expresiones analizadas, es un hashMap que tendrá el mismo orden que las expresiones que están como parámetros
      * @author Lorenzo Alejo y Luis Peralta
     */
-    public static HashMap<String,List<String>> analizarExpresiones(List<String> expresiones) throws IOException{
+    public static TreeMap<String,List<String>> analizarExpresiones(List<String> expresiones) throws IOException{
         
         //TEMPORAL: metodo para generar AnalizadorJflex
         generadorLexer();
         //end: metodo para generar AnalizadorJflex
         
-        HashMap<String, List<String>> expAnalizadas = new HashMap<>();
+        TreeMap<String, List<String>> expAnalizadas = new TreeMap<>();
         String analisis;
         int count = 0;
         for (String expresion: expresiones){
            //TODO: poner la parte a analizar aqui
             AnalizadorJFlex analizador = new AnalizadorJFlex(new StringReader(expresion));
+            List<String> tokens = new ArrayList<>();
             for(int i=0;i<expresion.length();i++){
                 if(expresion.charAt(i)>='0' && expresion.charAt(i)<='9'){
                         AnalizadorJFlex analizer = new AnalizadorJFlex(new StringReader(String.valueOf(expresion.charAt(i))));
-                        //TODO: reemplazar esto y retornarlo en el hashmap
-                        System.out.println(analizer.yylex());
+                        tokens.add(analizer.yylex().toString());
+                        //System.out.println(analizer.yylex());
                 }
                 if(expresion.charAt(i)=='+' || expresion.charAt(i)=='-' || expresion.charAt(i)=='*' || expresion.charAt(i)=='/' || expresion.charAt(i)=='^' || expresion.charAt(i)  == '.' || expresion.charAt(i) == ',')
                 {
                         AnalizadorJFlex analizer = new AnalizadorJFlex(new StringReader(String.valueOf(expresion.charAt(i))));
-                        //TODO: reemplazar esto y retornarlo en el hashmap
-                        System.out.println(analizer.yylex());
+                        tokens.add(analizer.yylex().toString());
+                        //System.out.println(analizer.yylex());
                 }
                 if(expresion.charAt(i)==' ')
                 {
                         AnalizadorJFlex analizer = new AnalizadorJFlex(new StringReader(String.valueOf(expresion.charAt(i))));
-                        //TODO: reemplazar esto y retornarlo en el hashmap
-                        System.out.println(analizer.yylex());
+                        tokens.add(analizer.yylex().toString());
+                        //System.out.println(analizer.yylex());
                 }
             }
+            tokens.add(analizador.yylex().toString());
             
-            //TODO: reemplazar esto y retornarlo en el hashmap
-            System.out.println("Expresion Regular="+analizador.yylex());
+            ++count;
+            expAnalizadas.put("Exp: #" + count + ": " + expresion, tokens);
             
+            //System.out.println("Expresion Regular="+analizador.yylex());
             
             //end: poner la parte a analizar aqui
             
-            if (++count == MAX_EXPRESIONES) break;
+            if (count == MAX_EXPRESIONES) break;
         }
         return expAnalizadas;
     }

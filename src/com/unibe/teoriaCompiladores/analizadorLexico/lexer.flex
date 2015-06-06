@@ -27,3 +27,4 @@ public String Tipo;
 ("integer")|("real")|("char") {Tipo=yytext(); return RESERVADA;}
 
 .*|,+ {return ERROR;}
+
