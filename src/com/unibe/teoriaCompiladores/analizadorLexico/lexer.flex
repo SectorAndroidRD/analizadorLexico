@@ -22,7 +22,7 @@ public String Tipo;
 "^" {return POTENCIA;}
 {D}+{Esp}* {Tipo=yytext(); return NUMERO;}
 {D}+("*"|"+"|"/"|"^"){D}+{Esp}* {Tipo=yytext(); return VALIDO;}
-({D}+("*"|"+"|"/"|"^"){D}+)(("*"|"+"|"/"|"^"){D}+)*{Esp}* {Tipo=yytext(); return VALIDO;}
+{D}+("*"|"+"|"/"|"^"){D}+(("*"|"+"|"/"|"^"){D}+)*{Esp}* {Tipo=yytext(); return VALIDO;}
 {Esp} {Tipo=yytext(); return SEPARADOR;}
 ("integer")|("real")|("char") {Tipo=yytext(); return RESERVADA;}
 
