@@ -31,9 +31,6 @@ public class Analizador {
     */
     public static TreeMap<String,List<String>> analizarExpresiones(List<String> expresiones) throws IOException{
         
-        //TEMPORAL: metodo para generar AnalizadorJflex
-        generadorLexer();
-        //end: metodo para generar AnalizadorJflex
         
         TreeMap<String, List<String>> expAnalizadas = new TreeMap<>();
         String analisis;
@@ -48,7 +45,7 @@ public class Analizador {
                         tokens.add(analizer.yylex().toString());
                         //System.out.println(analizer.yylex());
                 }
-                if(expresion.charAt(i)=='+' || expresion.charAt(i)=='-' || expresion.charAt(i)=='*' || expresion.charAt(i)=='/' || expresion.charAt(i)=='^' || expresion.charAt(i)  == '.' || expresion.charAt(i) == ',')
+                if(expresion.charAt(i)=='+' || expresion.charAt(i)=='-' || expresion.charAt(i)=='*' || expresion.charAt(i)=='/' || expresion.charAt(i)=='^' || expresion.charAt(i)  == '.' || expresion.charAt(i) == '(' || expresion.charAt(i) == ')')
                 {
                         AnalizadorJFlex analizer = new AnalizadorJFlex(new StringReader(String.valueOf(expresion.charAt(i))));
                         tokens.add(analizer.yylex().toString());

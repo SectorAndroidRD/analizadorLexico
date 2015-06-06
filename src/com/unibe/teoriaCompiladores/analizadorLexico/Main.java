@@ -237,7 +237,7 @@ public class Main extends javax.swing.JFrame {
             label = new JLabel(token);
             if (tokens.get(len-1).equals(token)){
                 if (token.equals("ERROR")) label.setForeground(Color.RED);
-                else label.setForeground(Color.green);
+                else label.setForeground(Color.blue);
             }
             panel.add(label); 
         }
