@@ -1,7 +1,17 @@
 package com.unibe.teoriaCompiladores.analizadorLexico;
 
 import static com.unibe.teoriaCompiladores.analizadorLexico.Analizador.generadorLexer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Proyecto del Analizador Léxico.
@@ -152,12 +162,72 @@ public class Main extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                Main main = new Main();
+                main.setVisible(true);
+                
+                main.jTextArea1.addKeyListener(new KeyListener(){
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        main.actualizarEtiquetaExpresiones();
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        main.actualizarEtiquetaExpresiones();
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        main.actualizarEtiquetaExpresiones();
+                    }
+                });   
+                
+                
+                main.jButton1.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            List<String> expresiones = new ArrayList<>();
+                            String[] splExpresiones = main.jTextArea1.getText().split("\n");
+                            
+                            int len = splExpresiones.length;
+                            for(int i=0;i<len; i++)
+                                expresiones.add(splExpresiones[i]);
+                            
+                            HashMap<String,List<String>> analisis = Analizador.analizarExpresiones(expresiones);
+                            
+                            
+                        } catch (IOException ex) {
+                            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+                
             }
         });
         generadorLexer();
-       
     }
+    
+   
+    /**
+     * Metodo para a actualizar etiqueta de las expresiones
+     * @author Fernando
+    */
+    private void actualizarEtiquetaExpresiones(){
+        countExpresion = jTextArea1.getLineCount();
+        jLabel4.setText(Integer.toString(countExpresion));
+        
+        if (countExpresion <= Analizador.MAX_EXPRESIONES){
+            oldValorTextArea = jTextArea1.getText();
+        }else  if (countExpresion > Analizador.MAX_EXPRESIONES){
+            jTextArea1.setText(oldValorTextArea);
+            actualizarEtiquetaExpresiones();
+        }
+        
+    }
+    
+    private String oldValorTextArea = "";
+    private Integer countExpresion = 0;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

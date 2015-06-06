@@ -22,10 +22,8 @@ public String Tipo;
 "^" {return POTENCIA;}
 {D}+{Esp}* {Tipo=yytext(); return NUMERO;}
 {D}+("*"|"+"|"/"|"^"){D}+{Esp}* {Tipo=yytext(); return VALIDO;}
+({D}+("*"|"+"|"/"|"^"){D}+)(("*"|"+"|"/"|"^"){D}+)*{Esp}* {Tipo=yytext(); return VALIDO;}
 {Esp} {Tipo=yytext(); return SEPARADOR;}
-{INTEGER} +  {Tipo=yytext(); return RESERVADA;}
-{CHAR} +  {Tipo=yytext(); return RESERVADA;}
-{REAL} +  {Tipo=yytext(); return RESERVADA;}
 ("integer")|("real")|("char") {Tipo=yytext(); return RESERVADA;}
 
 .*|,+ {return ERROR;}
